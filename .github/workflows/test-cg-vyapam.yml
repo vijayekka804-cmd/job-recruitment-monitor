@@ -1,0 +1,40 @@
+name: CG Vyapam Recruitment Diagnostic test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnostic-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies (npm ci)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Run Typecheck
+        run: npm run typecheck
+
+      - name: Run Live CG Vyapam Crawler
+        run: npm run test:vyapam
+
+      - name: Upload Diagnostic JSON Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cg-vyapam-diagnostic-result
+          path: dist/diagnostic-result.json
+          retention-days: 7

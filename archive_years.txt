@@ -1,0 +1,77 @@
+PAGE TITLE: CG Vyapam
+Link text: "NOTICE" | href: "\Posts?tag=NOTICE" | tag: a | parent: li
+Link text: "ONLINE APPLICATION" | href: "\Posts?tag=ONLINE APPLICATION" | tag: a | parent: li
+Link text: "ADMIT CARD" | href: "\Posts?tag=ADMIT CARD" | tag: a | parent: li
+Link text: "MODEL ANSWERS" | href: "\Posts?tag=MODEL ANSWERS" | tag: a | parent: li
+Link text: "DAVA AAPATTI" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=DAVA" | tag: a | parent: li
+Link text: "RESULT" | href: "\Post?PostID=RESULT" | tag: a | parent: li
+Link text: "TENDER" | href: "\Posts?tag=TENDER" | tag: a | parent: li
+Link text: "NOTICE" | href: "\Posts?tag=NOTICE" | tag: a | parent: li
+Link text: "ONLINE APPLICATION" | href: "\Posts?tag=ONLINE APPLICATION" | tag: a | parent: li
+Link text: "ADMIT CARD" | href: "\Posts?tag=ADMIT CARD" | tag: a | parent: li
+Link text: "MODEL ANSWERS" | href: "\Posts?tag=MODEL ANSWERS" | tag: a | parent: li
+Link text: "DAVA AAPATTI" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=DAVA" | tag: a | parent: li
+Link text: "RESULT" | href: "\Post?PostID=RESULT" | tag: a | parent: li
+Link text: "TENDER" | href: "\Posts?tag=TENDER" | tag: a | parent: li
+Link text: "नगर सेना अग्निशमन एवं आपातकालीन सेवाएँ तथा एसडीआरएफ के अंतर्गत महिला एवं पुरूष नगर सैनिकों की लिखित भर्ती परीक्षा (NSMF25)" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=NSMF25ONLINE" | tag: a | parent: p
+Link text: "नगर सेना अग्निशमन एवं आपातकालीन सेवाएँ तथा एसडीआरएफ के अंतर्गत महिला एवं पुरूष नगर सैनिकों की लिखित भर्ती परीक्षा (NSMF25)" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=237" | tag: a | parent: p
+Link text: "विकास आयुक्त कार्यालय, नवा रायपुर के अंतर्गत सहायक विकास विस्तार अधिकारी भर्ती परीक्षा(ADEO25)" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=ADEO25ONLINE" | tag: a | parent: p
+Link text: "Post Basic Nursing (PBN) Entrance Examination- 2025" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=PBN25ONLINE" | tag: a | parent: p
+Link text: "M.Sc. Nursing (MSCN) Entrance Examination- 2025" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=MSCN25ONLINE" | tag: a | parent: p
+Link text: "B.Sc. Nursing (BSCN) Entrance Examination- 2025" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=BSCN25ONLINE" | tag: a | parent: p
+Link text: "प्री.बी.एड. (Pre B.Ed.) एवं प्री.डी.एल.एड. (Pre D.El.Ed.) प्रवेश परीक्षा-2025" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=280325BDED25ONLINE" | tag: a | parent: p
+Link text: "Pre Agriculture Test/Pre Horticulture Test/Pre Veterinary Polytechnic Test/ Pre Diploma in Fisheries Science Test (PAT/PVPT)- 2025" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=PAT/PVPT25ONLINE" | tag: a | parent: p
+Link text: "PET/PPHT ENTRANCE EXAM -2025 B.E/ B.Tech, B.Tech (Agriculture Engg), B.Tech. (Food Tech), B.Tech (Dairy Tech), Diploma in Dairy Tech(DDT), B. Pharmacy, D. Pharmacy" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=200325PEP25" | tag: a | parent: p
+Link text: "प्री पॉलिटेक्निक प्रवेश परीक्षा(Diploma Engineering (PPT25) - 2025" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=130325PPT25" | tag: a | parent: p
+Link text: "प्री एम सी ए प्रवेश परीक्षा(MCA25) - 2025" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=130325MCA25" | tag: a | parent: p
+Link text: "लोक स्वास्थ्य यांत्रिकी विभाग, रायपुर के अंतर्गत उप अभियंता (सिविल) एवं उप अभिंयता (वि./ यां.) पदों की भर्ती परीक्षा (PHSE25)" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=11032025PHSE25ONLINEAPP" | tag: a | parent: p
+Link text: "प्रयोगशाला सहायक भर्ती परीक्षा 2023 (KASL23) के सम्बंध में विज्ञप्ति" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/pdfs/89660631-f55b-47d7-8f2b-96717de709d8_KASL_ATTENDANCE.pdf" | tag: a | parent: p
+Link text: "छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर( VISIBLE IMPAIRED)" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/pdfs/a3cf5d3f-e15b-4873-80aa-16a8b8e479ae_SET model ans VISIBLE IMPAIRED.pdf" | tag: a | parent: p
+Link text: "छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर (Normal Candidate)" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/pdfs/cccb5a20-8f02-4816-a0bd-bddb130166b9_SET model ans NORMAL CANDIDATE.pdf" | tag: a | parent: p
+Link text: "व्यापम द्वारा वर्ष 2025 में आयोजित की जाने वाली प्रवेश/भर्ती परीक्षाओं का वार्षिक कैलेण्डर" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/pdfs/3c95dc5d-3ebf-4ebd-bbb5-7b63db93d913_calender.pdf" | tag: a | parent: p
+Link text: "सहायक मार्शल पदों हेतु लिखित भर्ती परीक्षा(VSAM) - 2024 के मॉडल उत्तर" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/pdfs/3cac7a83-7701-4331-b9a3-bb39bf5ca7a8_model ans VSAM.pdf" | tag: a | parent: p
+Link text: "LANDLINE: 0771-2972780" | href: "\" | tag: a | parent: li
+Link text: "TET 2019 E-CERTIFICATES PAGE 2 (2017, 2019, 2020, 2022)" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/uploads/menus/files/11e9d825-d290-4a9f-9117-1e3c2e73b27f_0001 (1)-converted_0 (1).pdf" | tag: a | parent: li
+Link text: "ACT" | href: "\Post?PostID=सुचना-का-अधिकार-अधिनियम-की-धारा-41-ख-i-के-अंतर्गत-0" | tag: a | parent: li
+Link text: "2024" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECRUITMENT2024" | tag: a | parent: li
+Link text: "2023" | href: "\Post?PostID=Recruitment Year Wise2023" | tag: a | parent: li
+Link text: "2022" | href: "\Post?PostID=Recuirment Exam - 2022" | tag: a | parent: li
+Link text: "2021" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2021" | tag: a | parent: li
+Link text: "2020" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2020" | tag: a | parent: li
+Link text: "2019" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2019" | tag: a | parent: li
+Link text: "2018" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2018" | tag: a | parent: li
+Link text: "2017" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2017" | tag: a | parent: li
+Link text: "2016" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2016" | tag: a | parent: li
+Link text: "2015" | href: "http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECEXAM2015" | tag: a | parent: li
+Link text: "ABOUT US" | href: "Post?PostID=AboutUs" | tag: a | parent: li
+Link text: "OFFICIALS" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=_OFFICIALS" | tag: a | parent: li
+Link text: "VISION" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=Vision%20Of%20Chhattisgarh%20Vyapam" | tag: a | parent: li
+Link text: "MISSION" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=Mission%20Of%20Chhattisgarh%20Vyapam" | tag: a | parent: li
+Link text: "GAZETTE" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=GAZETTE" | tag: a | parent: li
+Link text: "RECRUITMENT" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=Recruitment%20Year%20Wise" | tag: a | parent: li
+Link text: "ELIGIBILITY" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=ElegibilityExams" | tag: a | parent: li
+Link text: "ENTRANCE" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=EntranceYearWise" | tag: a | parent: li
+Link text: "RECRUITMENT" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECRESULT" | tag: a | parent: li
+Link text: "ELIGIBILITY" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=ElegibilityResultYearWise" | tag: a | parent: li
+Link text: "ENTRANCE" | href: "\Post?PostID=EntranceResultYearWise" | tag: a | parent: li
+Link text: "QUE. PAPER" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=Previous%20years%20question%20papers" | tag: a | parent: li
+Link text: "PRESS RELEASE" | href: "\Post?PostID=Press Release" | tag: a | parent: li
+Link text: "FORMS & FORMATE" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=FormsFormates" | tag: a | parent: li
+Link text: "CONTACT US" | href: "/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=CONTACT" | tag: a | parent: li
+Tag containing year: a, text: "Post Basic Nursing (PBN) Entrance Examination- 2025", html: Post Basic Nursing (PBN) Entrance Examination- 2025
+Tag containing year: a, text: "M.Sc. Nursing (MSCN) Entrance Examination- 2025", html: M.Sc. Nursing (MSCN) Entrance Examination- 2025
+Tag containing year: a, text: "B.Sc. Nursing (BSCN) Entrance Examination- 2025", html: B.Sc. Nursing (BSCN) Entrance Examination- 2025
+Tag containing year: a, text: "प्री.बी.एड. (Pre B.Ed.) एवं प्री.डी.एल.एड. (Pre D.El.Ed.) प्रवेश परीक्षा-2025", html: प्री.बी.एड. (Pre B.Ed.) एवं प्री.डी.एल.एड. (Pre D.El.Ed.) प्रवेश परीक्षा-2025
+Tag containing year: a, text: "प्री पॉलिटेक्निक प्रवेश परीक्षा(Diploma Engineering (PPT25) - 2025", html: प्री पॉलिटेक्निक प्रवेश परीक्षा(Diploma Engineering (PPT25) - 2025
+Tag containing year: a, text: "प्री एम सी ए प्रवेश परीक्षा(MCA25) - 2025", html: प्री एम सी ए प्रवेश परीक्षा(MCA25) - 2025
+Tag containing year: a, text: "प्रयोगशाला सहायक भर्ती परीक्षा 2023 (KASL23) के सम्बंध में विज्ञप्ति", html:  प्रयोगशाला सहायक भर्ती परीक्षा 2023 (KASL23) के सम्बंध में विज्ञप्ति
+Tag containing year: a, text: "छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर( VISIBLE IMPAIRED)", html: छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर( VISIBLE IMPAIRED)
+Tag containing year: a, text: "छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर (Normal Candidate)", html: छत्तीसगढ़ राज्य पात्रता परीक्षा (CG SET) 2024 के प्रश्न पत्र के मॉडल उत्तर (Normal Candidate)
+Tag containing year: a, text: "व्यापम द्वारा  वर्ष 2025 में आयोजित की जाने वाली प्रवेश/भर्ती परीक्षाओं का  वार्षिक कैलेण्डर", html: व्यापम द्वारा  वर्ष 2025 में आयोजित की जाने वाली प्रवेश/भर्ती परीक्षाओं का  वार्षिक कैलेण्डर 
+Tag containing year: a, text: "सहायक मार्शल पदों हेतु लिखित भर्ती परीक्षा(VSAM) - 2024 के मॉडल उत्तर", html: सहायक मार्शल पदों हेतु लिखित भर्ती परीक्षा(VSAM) - 2024&nbsp;के&nbsp;मॉडल उत्तर
+Tag containing year: li, text: "2024", html: <a href="http://web.archive.org/web/20250417213825/https://vyapamcg.cgstate.gov.in/Post?PostID=RECRUITMENT2024"><strong>2024</strong></a>
+Tag containing year: a, text: "2024", html: <strong>2024</strong>
+Tag containing year: strong, text: "2024", html: 2024
+Tag containing year: li, text: "2023", html: <a href="\Post?PostID=Recruitment Year Wise2023"><strong>2023</strong></a>
+Tag containing year: a, text: "2023", html: <strong>2023</strong>
+Tag containing year: strong, text: "2023", html: 2023
