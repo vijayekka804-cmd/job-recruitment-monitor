@@ -2,46 +2,47 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as dns from 'dns';
+import * as https from 'https';
 import { parseCgVyapamHtml, normalizeUrl } from '../src/scrapers/cgVyapamScraper';
 import { RecruitmentNotice } from '../src/types';
 
 async function runDiagnostic() {
   const TIMEOUT = 60000; // 60-second timeout as required for the standalone actions crawler
-  const homepageUrl = 'https://vyapamcg.cgstate.gov.in/';
-  const yearWiseUrl = 'https://vyapamcg.cgstate.gov.in/Post?PostID=Recruitment+Year+Wise';
   
+  const urlsToTest = [
+    { url: 'https://vyapamcg.cgstate.gov.in/', type: 'homepage' as const },
+    { url: 'https://vyapamcg.cgstate.gov.in/Post?PostID=Recruitment+Year+Wise', type: 'year-wise' as const },
+    { url: 'https://vyapamcg.cgstate.gov.in/Posts?tag=RECEXAM26', type: 'current-year' as const }
+  ];
+
   const diagnosticResult: {
     timestamp: string;
     durationMs: number;
-    homepage: {
-      status: 'success' | 'failed';
-      statusCode?: number;
+    overallStatus: 'success' | 'failed';
+    tests: Array<{
+      url: string;
+      pageType: 'homepage' | 'year-wise' | 'current-year';
+      connectionMode: 'default' | 'ipv4';
+      dnsLookupSuccess: boolean;
+      hasIpv4Addresses: boolean;
+      httpStatus?: number;
+      contentType?: string;
+      responseBodySize: number;
+      durationMs: number;
+      pageTitle: string;
+      expectedHeadingDetected: boolean;
+      extractedNoticeCount: number;
       errorCode?: string;
-      error?: string;
-      noticesFound: number;
-    };
-    yearWise: {
-      status: 'success' | 'failed';
-      statusCode?: number;
-      errorCode?: string;
-      error?: string;
-      discoveredUrl?: string;
-    };
-    currentYearListing: {
-      status: 'success' | 'failed' | 'skipped';
-      statusCode?: number;
-      errorCode?: string;
-      error?: string;
-      noticesFound: number;
-    };
+      sanitizedErrorMessage?: string;
+    }>;
     totalUniqueNotices: number;
     notices: RecruitmentNotice[];
   } = {
     timestamp: new Date().toISOString(),
     durationMs: 0,
-    homepage: { status: 'failed', noticesFound: 0 },
-    yearWise: { status: 'failed' },
-    currentYearListing: { status: 'skipped', noticesFound: 0 },
+    overallStatus: 'failed',
+    tests: [],
     totalUniqueNotices: 0,
     notices: []
   };
@@ -65,145 +66,181 @@ async function runDiagnostic() {
     console.error(`[DIAGNOSTIC] Failed to create dist/ directory:`, err.message);
   }
 
-  try {
-    // 1. Crawl Homepage
-    let homepageHtml = '';
-    try {
-      console.log(`[DIAGNOSTIC] Fetching homepage: ${homepageUrl}...`);
-      const response = await axios.get(homepageUrl, { headers, timeout: TIMEOUT });
-      homepageHtml = response.data;
-      diagnosticResult.homepage.status = 'success';
-      diagnosticResult.homepage.statusCode = response.status;
-    } catch (err: any) {
-      console.error(`[DIAGNOSTIC] Homepage fetch failed:`, err.message);
-      diagnosticResult.homepage.status = 'failed';
-      diagnosticResult.homepage.error = err.message;
-      diagnosticResult.homepage.errorCode = err.code || 'UNKNOWN';
-      if (err.response) {
-        diagnosticResult.homepage.statusCode = err.response.status;
-      }
-      
-      // Since homepage is critical, set exit code and throw to go to finally block
-      process.exitCode = 1;
-      throw new Error(`Homepage request failed: ${err.message}`);
-    }
+  const allParsedNotices: RecruitmentNotice[] = [];
 
-    // Parse homepage notices
-    let homepageNotices: RecruitmentNotice[] = [];
-    try {
-      homepageNotices = parseCgVyapamHtml(homepageHtml, homepageUrl, 'cg-vyapam', 'CG Vyapam Recruitment', true);
-      diagnosticResult.homepage.noticesFound = homepageNotices.length;
-      console.log(`[DIAGNOSTIC] Parsed ${homepageNotices.length} notices from homepage.`);
-    } catch (err: any) {
-      console.error(`[DIAGNOSTIC] Error parsing homepage HTML:`, err.message);
-    }
-
-    // 2. Fetch Year Wise page to locate current year page
-    let yearWiseHtml = '';
-    let discoveredUrl = '';
-    const currentYearStr = new Date().getFullYear().toString();
-    const lastTwoDigits = currentYearStr.slice(-2);
-
-    try {
-      console.log(`[DIAGNOSTIC] Fetching Year Wise page: ${yearWiseUrl}...`);
-      const response = await axios.get(yearWiseUrl, { headers, timeout: TIMEOUT });
-      yearWiseHtml = response.data;
-      diagnosticResult.yearWise.status = 'success';
-      diagnosticResult.yearWise.statusCode = response.status;
-
-      const $ = cheerio.load(yearWiseHtml);
-      $('a').each((_, el) => {
-        const anchor = $(el);
-        const text = anchor.text().replace(/\s+/g, ' ').trim();
-        const href = anchor.attr('href') || '';
-        
-        if (text === currentYearStr || text.includes(currentYearStr) || href.toLowerCase().includes(`recexam${lastTwoDigits}`)) {
-          const absolute = normalizeUrl(href);
-          if (absolute) {
-            discoveredUrl = absolute;
-            return false; // break
-          }
-        }
-      });
-
-      if (discoveredUrl) {
-        diagnosticResult.yearWise.discoveredUrl = discoveredUrl;
-        console.log(`[DIAGNOSTIC] Discovered current year URL: ${discoveredUrl}`);
-      } else {
-        discoveredUrl = `https://vyapamcg.cgstate.gov.in/Posts?tag=RECEXAM${lastTwoDigits}`;
-        diagnosticResult.yearWise.discoveredUrl = discoveredUrl;
-        console.log(`[DIAGNOSTIC] Current year link not found in year-wise page, using fallback URL: ${discoveredUrl}`);
-      }
-    } catch (err: any) {
-      console.warn(`[DIAGNOSTIC] Year Wise page fetch failed:`, err.message);
-      diagnosticResult.yearWise.status = 'failed';
-      diagnosticResult.yearWise.error = err.message;
-      diagnosticResult.yearWise.errorCode = err.code || 'UNKNOWN';
-      if (err.response) {
-        diagnosticResult.yearWise.statusCode = err.response.status;
-      }
-      // Fallback URL
-      discoveredUrl = `https://vyapamcg.cgstate.gov.in/Posts?tag=RECEXAM${lastTwoDigits}`;
-      diagnosticResult.yearWise.discoveredUrl = discoveredUrl;
-      console.log(`[DIAGNOSTIC] Using fallback current year URL: ${discoveredUrl}`);
-    }
-
-    // 3. Fetch discovered current year page
-    let currentYearHtml = '';
-    let currentYearNotices: RecruitmentNotice[] = [];
-    if (discoveredUrl) {
-      try {
-        console.log(`[DIAGNOSTIC] Fetching current-year listing page: ${discoveredUrl}...`);
-        diagnosticResult.currentYearListing.status = 'success';
-        const response = await axios.get(discoveredUrl, { headers, timeout: TIMEOUT });
-        currentYearHtml = response.data;
-        diagnosticResult.currentYearListing.statusCode = response.status;
-
-        currentYearNotices = parseCgVyapamHtml(currentYearHtml, discoveredUrl, 'cg-vyapam', 'CG Vyapam Recruitment', false);
-        diagnosticResult.currentYearListing.noticesFound = currentYearNotices.length;
-        console.log(`[DIAGNOSTIC] Parsed ${currentYearNotices.length} notices from current-year page.`);
-      } catch (err: any) {
-        console.error(`[DIAGNOSTIC] Current year listing page fetch failed:`, err.message);
-        diagnosticResult.currentYearListing.status = 'failed';
-        diagnosticResult.currentYearListing.error = err.message;
-        diagnosticResult.currentYearListing.errorCode = err.code || 'UNKNOWN';
-        if (err.response) {
-          diagnosticResult.currentYearListing.statusCode = err.response.status;
-        }
-      }
-    }
-
-    // 4. Merge and deduplicate
-    const allNotices = [...homepageNotices, ...currentYearNotices];
-    const uniqueMap = new Map<string, RecruitmentNotice>();
-    for (const n of allNotices) {
-      if (!uniqueMap.has(n.url)) {
-        uniqueMap.set(n.url, n);
-      }
-    }
-
-    const finalNotices = Array.from(uniqueMap.values());
-    diagnosticResult.notices = finalNotices;
-    diagnosticResult.totalUniqueNotices = finalNotices.length;
-  } catch (err: any) {
-    console.error(`[DIAGNOSTIC] Flow interrupted or failed:`, err.message);
-    process.exitCode = 1;
-  } finally {
-    // 5. Always save diagnostic JSON artifact in finally block
-    diagnosticResult.durationMs = Date.now() - startTime;
-    try {
-      const artifactPath = path.join(process.cwd(), 'dist', 'diagnostic-result.json');
-      await fs.writeFile(artifactPath, JSON.stringify(diagnosticResult, null, 2), 'utf-8');
-      console.log(`[DIAGNOSTIC] Saved diagnostic artifact to ${artifactPath}`);
-    } catch (writeErr: any) {
-      console.error(`[DIAGNOSTIC] Failed to save diagnostic artifact:`, writeErr.message);
-    }
+  for (let i = 0; i < urlsToTest.length; i++) {
+    const item = urlsToTest[i];
+    const { url, type } = item;
     
-    if (process.exitCode === 1) {
-      console.log(`[DIAGNOSTIC] Diagnostic run finished with failure status (Exit Code 1).`);
-    } else {
-      console.log(`[DIAGNOSTIC] Diagnostic run completed successfully (Exit Code 0).`);
+    const indexStr = `${i + 1}/${urlsToTest.length}`;
+    const nameStr = type === 'homepage' ? 'Homepage' : type === 'year-wise' ? 'Recruitment Year-Wise' : 'Current-Year Recruitment Page';
+    console.log(`\n======================================================================`);
+    console.log(`[TEST ${indexStr}] ${nameStr}: ${url}`);
+    console.log(`----------------------------------------------------------------------`);
+
+    // DNS lookup
+    const hostname = new URL(url).hostname;
+    let dnsLookupSuccess = false;
+    let hasIpv4Addresses = false;
+    try {
+      const addresses = await dns.promises.lookup(hostname, { all: true });
+      dnsLookupSuccess = true;
+      hasIpv4Addresses = addresses.some(addr => addr.family === 4);
+      console.log(`DNS Lookup: SUCCESS (IPv4: ${hasIpv4Addresses ? 'found' : 'not found'})`);
+    } catch (dnsErr: any) {
+      dnsLookupSuccess = false;
+      hasIpv4Addresses = false;
+      console.log(`DNS Lookup: FAILED (${dnsErr.message})`);
     }
+
+    let connectionMode: 'default' | 'ipv4' = 'default';
+    let response: any = null;
+    let testDuration = 0;
+    let httpStatus: number | undefined = undefined;
+    let contentType: string | undefined = undefined;
+    let bodySize = 0;
+    let errorMsg: string | undefined = undefined;
+    let errorCode: string | undefined = undefined;
+    let pageTitle = '';
+    let expectedHeadingDetected = false;
+    let extractedNoticeCount = 0;
+    let html = '';
+
+    const testStartTime = Date.now();
+    try {
+      console.log(`Default Connection: Fetching...`);
+      response = await axios.get(url, { headers, timeout: TIMEOUT });
+      testDuration = Date.now() - testStartTime;
+      html = response.data;
+      httpStatus = response.status;
+      contentType = response.headers['content-type'] ? String(response.headers['content-type']) : undefined;
+      bodySize = typeof html === 'string' ? Buffer.byteLength(html, 'utf8') : 0;
+      console.log(`Default Connection: SUCCESS (HTTP ${httpStatus}, ${bodySize} bytes, ${testDuration}ms)`);
+    } catch (err: any) {
+      testDuration = Date.now() - testStartTime;
+      errorCode = err.code || 'UNKNOWN';
+      errorMsg = err.message ? err.message.replace(/[\/\\][a-zA-Z0-9_\-\.\/]+/g, '') : 'Unknown Network Error';
+      console.log(`Default Connection: FAILED (${errorMsg})`);
+
+      if (err.response) {
+        httpStatus = err.response.status;
+        contentType = err.response.headers['content-type'] ? String(err.response.headers['content-type']) : undefined;
+        html = err.response.data;
+        bodySize = typeof html === 'string' ? Buffer.byteLength(html, 'utf8') : 0;
+      }
+
+      // Retry once using IPv4 family: 4
+      console.log(`IPv4 Retry Connection: Fetching with family: 4...`);
+      const retryStartTime = Date.now();
+      try {
+        const ipv4Agent = new https.Agent({ family: 4 });
+        const retryResponse = await axios.get(url, { headers, timeout: TIMEOUT, httpsAgent: ipv4Agent });
+        connectionMode = 'ipv4';
+        testDuration = Date.now() - retryStartTime;
+        html = retryResponse.data;
+        httpStatus = retryResponse.status;
+        contentType = retryResponse.headers['content-type'] ? String(retryResponse.headers['content-type']) : undefined;
+        bodySize = typeof html === 'string' ? Buffer.byteLength(html, 'utf8') : 0;
+        // Clear error as retry succeeded
+        errorCode = undefined;
+        errorMsg = undefined;
+        response = retryResponse;
+        console.log(`IPv4 Retry Connection: SUCCESS (HTTP ${httpStatus}, ${bodySize} bytes, ${testDuration}ms)`);
+      } catch (retryErr: any) {
+        console.log(`IPv4 Retry Connection: FAILED (${retryErr.message})`);
+        errorCode = retryErr.code || errorCode || 'UNKNOWN';
+        errorMsg = `Default & IPv4 retry both failed. Latest: ${retryErr.message ? retryErr.message.replace(/[\/\\][a-zA-Z0-9_\-\.\/]+/g, '') : 'Unknown'}`;
+      }
+    }
+
+    if (html) {
+      const $ = cheerio.load(html);
+      pageTitle = $('title').text().replace(/\s+/g, ' ').trim() || '';
+      
+      const lowerText = $('body').text().toLowerCase();
+      if (type === 'homepage') {
+        expectedHeadingDetected = lowerText.includes('vyapam') || lowerText.includes('recruitment') || lowerText.includes('भर्ती');
+      } else if (type === 'year-wise') {
+        expectedHeadingDetected = lowerText.includes('year wise') || lowerText.includes('recruitment') || lowerText.includes('post');
+      } else if (type === 'current-year') {
+        expectedHeadingDetected = lowerText.includes('recexam') || lowerText.includes('recruitment') || lowerText.includes('भर्ती') || lowerText.includes('posts');
+      }
+
+      // Parse notices if it contains recruitment links
+      if (type === 'homepage' || type === 'current-year') {
+        try {
+          const isHomepage = type === 'homepage';
+          const notices = parseCgVyapamHtml(html, url, 'cg-vyapam', 'CG Vyapam Recruitment', isHomepage);
+          extractedNoticeCount = notices.length;
+          allParsedNotices.push(...notices);
+          console.log(`Parsed ${extractedNoticeCount} notices successfully.`);
+        } catch (parseErr: any) {
+          console.log(`Parser Error: ${parseErr.message}`);
+        }
+      }
+    }
+
+    // Print test outcome summary
+    console.log(`Page Title: "${pageTitle || 'N/A'}"`);
+    console.log(`Expected Heading Detected: ${expectedHeadingDetected ? 'YES' : 'NO'}`);
+    console.log(`Extracted Notice Count: ${extractedNoticeCount}`);
+    console.log(`======================================================================`);
+
+    diagnosticResult.tests.push({
+      url,
+      pageType: type,
+      connectionMode,
+      dnsLookupSuccess,
+      hasIpv4Addresses,
+      httpStatus,
+      contentType,
+      responseBodySize: bodySize,
+      durationMs: testDuration,
+      pageTitle,
+      expectedHeadingDetected,
+      extractedNoticeCount,
+      errorCode,
+      sanitizedErrorMessage: errorMsg
+    });
+  }
+
+  // Deduplicate notices
+  const uniqueMap = new Map<string, RecruitmentNotice>();
+  for (const n of allParsedNotices) {
+    if (!uniqueMap.has(n.url)) {
+      uniqueMap.set(n.url, n);
+    }
+  }
+  const finalNotices = Array.from(uniqueMap.values());
+  diagnosticResult.notices = finalNotices;
+  diagnosticResult.totalUniqueNotices = finalNotices.length;
+
+  // Evaluate Overall Success: Successful if either homepage or direct current-year page succeeds
+  const homepageSuccess = diagnosticResult.tests.find(t => t.pageType === 'homepage')?.httpStatus === 200;
+  const currentYearSuccess = diagnosticResult.tests.find(t => t.pageType === 'current-year')?.httpStatus === 200;
+
+  if (homepageSuccess || currentYearSuccess) {
+    diagnosticResult.overallStatus = 'success';
+    process.exitCode = 0;
+  } else {
+    diagnosticResult.overallStatus = 'failed';
+    process.exitCode = 1;
+  }
+
+  // Save diagnostic JSON artifact
+  diagnosticResult.durationMs = Date.now() - startTime;
+  try {
+    const artifactPath = path.join(process.cwd(), 'dist', 'diagnostic-result.json');
+    await fs.writeFile(artifactPath, JSON.stringify(diagnosticResult, null, 2), 'utf-8');
+    console.log(`\n[DIAGNOSTIC] Saved complete diagnostic artifact to ${artifactPath}`);
+  } catch (writeErr: any) {
+    console.error(`\n[DIAGNOSTIC] Failed to save diagnostic artifact:`, writeErr.message);
+  }
+
+  if (process.exitCode === 1) {
+    console.log(`[DIAGNOSTIC] Diagnostic run finished with failure status (Exit Code 1).`);
+  } else {
+    console.log(`[DIAGNOSTIC] Diagnostic run completed successfully (Exit Code 0).`);
   }
 }
 
